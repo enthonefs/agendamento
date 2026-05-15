@@ -1,4 +1,4 @@
-package com.org.agendamento.exceptions;
+package com.org.agendamento.infrastructure.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

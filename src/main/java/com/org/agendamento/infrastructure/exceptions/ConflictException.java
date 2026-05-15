@@ -1,4 +1,4 @@
-package com.org.agendamento.exceptions;
+package com.org.agendamento.infrastructure.exceptions;
 
 public class ConflictException extends RuntimeException {
     public ConflictException(String message) {

@@ -1,4 +1,4 @@
-package com.org.agendamento.model;
+package com.org.agendamento.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
