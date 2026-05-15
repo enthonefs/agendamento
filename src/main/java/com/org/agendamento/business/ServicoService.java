@@ -1,7 +1,7 @@
-package com.org.agendamento.service;
+package com.org.agendamento.business;
 
-import com.org.agendamento.model.Servico;
-import com.org.agendamento.repository.ServicoRepository;
+import com.org.agendamento.infrastructure.entity.Servico;
+import com.org.agendamento.infrastructure.ServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
