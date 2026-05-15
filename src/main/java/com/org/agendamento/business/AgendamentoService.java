@@ -1,13 +1,13 @@
-package com.org.agendamento.service;
+package com.org.agendamento.business;
 
-import com.org.agendamento.exceptions.ConflictException;
-import com.org.agendamento.exceptions.ResourceNotFoundException;
-import com.org.agendamento.model.Agendamento;
-import com.org.agendamento.model.Cliente;
-import com.org.agendamento.model.Servico;
-import com.org.agendamento.repository.AgendamentoRepository;
-import com.org.agendamento.repository.ClienteRepository;
-import com.org.agendamento.repository.ServicoRepository;
+import com.org.agendamento.infrastructure.exceptions.ConflictException;
+import com.org.agendamento.infrastructure.exceptions.ResourceNotFoundException;
+import com.org.agendamento.infrastructure.entity.Agendamento;
+import com.org.agendamento.infrastructure.entity.Cliente;
+import com.org.agendamento.infrastructure.entity.Servico;
+import com.org.agendamento.infrastructure.AgendamentoRepository;
+import com.org.agendamento.infrastructure.ClienteRepository;
+import com.org.agendamento.infrastructure.ServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

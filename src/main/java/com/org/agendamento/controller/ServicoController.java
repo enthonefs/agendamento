@@ -1,7 +1,7 @@
 package com.org.agendamento.controller;
 
-import com.org.agendamento.model.Servico;
-import com.org.agendamento.service.ServicoService;
+import com.org.agendamento.infrastructure.entity.Servico;
+import com.org.agendamento.business.ServicoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

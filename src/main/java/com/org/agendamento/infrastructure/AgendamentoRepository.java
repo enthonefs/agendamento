@@ -1,6 +1,6 @@
-package com.org.agendamento.repository;
+package com.org.agendamento.infrastructure;
 
-import com.org.agendamento.model.Agendamento;
+import com.org.agendamento.infrastructure.entity.Agendamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
