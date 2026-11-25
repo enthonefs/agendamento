@@ -1,11 +1,13 @@
 package com.org.agendamento.business;
 
+import com.org.agendamento.business.dto.ClienteRequest;
 import com.org.agendamento.infrastructure.entity.Cliente;
-import com.org.agendamento.infrastructure.ClienteRepository;
+import com.org.agendamento.infrastructure.repository.ClienteRepository;
+import com.org.agendamento.infrastructure.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,29 +15,33 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public List<Cliente> buscarTodos(){
-        return clienteRepository.findAll();
+    public Page<Cliente> buscarTodos(Pageable pageable){
+        return clienteRepository.findAll(pageable);
     }
 
-    public Cliente criarCliente(Cliente cliente){
+    public Cliente criarCliente(ClienteRequest request){
+        Cliente cliente = Cliente.builder()
+                .nome(request.nome())
+                .telefone(request.telefone())
+                .build();
         return clienteRepository.save(cliente);
 
     }
 
-    public Cliente atualizarCliente(Long id, Cliente cliente){
+    public Cliente atualizarCliente(Long id, ClienteRequest request){
         Cliente clienteExistente = clienteRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Id de Cliente não encontrado"));
+                () -> new ResourceNotFoundException("Cliente não encontrado."));
 
-        Cliente clienteAtualizado = Cliente.builder()
-                .nome(cliente.getNome() != null ? cliente.getNome() : clienteExistente.getNome())
-                .telefone(cliente.getTelefone() != null ? cliente.getTelefone() : clienteExistente.getTelefone())
-                .id(clienteExistente.getId())
-                .build();
+        clienteExistente.setNome(request.nome());
+        clienteExistente.setTelefone(request.telefone());
 
-        return clienteRepository.saveAndFlush(clienteAtualizado);
+        return clienteRepository.saveAndFlush(clienteExistente);
     }
 
     public void deletarCliente(Long id){
+        if (!clienteRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Cliente não encontrado.");
+        }
         clienteRepository.deleteById(id);
     }
 }

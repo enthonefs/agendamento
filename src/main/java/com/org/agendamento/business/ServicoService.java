@@ -1,11 +1,13 @@
 package com.org.agendamento.business;
 
+import com.org.agendamento.business.dto.ServicoRequest;
 import com.org.agendamento.infrastructure.entity.Servico;
-import com.org.agendamento.infrastructure.ServicoRepository;
+import com.org.agendamento.infrastructure.repository.ServicoRepository;
+import com.org.agendamento.infrastructure.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,30 +15,34 @@ public class ServicoService {
 
     private final ServicoRepository servicoRepository;
 
-    public List<Servico> buscarTodos(){
-        return servicoRepository.findAll();
+    public Page<Servico> buscarTodos(Pageable pageable){
+        return servicoRepository.findAll(pageable);
     }
 
-    public Servico criarServico(Servico servico){
+    public Servico criarServico(ServicoRequest request){
+        Servico servico = Servico.builder()
+                .servico(request.servico())
+                .valor(request.valor())
+                .build();
         return servicoRepository.save(servico);
     }
 
 
-    public Servico atualizarAgendamento(Long id, Servico servico){
+    public Servico atualizarServico(Long id, ServicoRequest request){
         Servico servicoAtual = servicoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Agendamento não encontrado."));
+                () -> new ResourceNotFoundException("Serviço não encontrado."));
 
-        Servico servicoAtualizado = Servico.builder()
-                .servico(servico.getServico() != null ? servico.getServico() : servicoAtual.getServico())
-                .valor(servico.getValor() != 0 ? servico.getValor() : servicoAtual.getValor())
-                .id(servicoAtual.getId())
-                .build();
+        servicoAtual.setServico(request.servico());
+        servicoAtual.setValor(request.valor());
 
-        return servicoRepository.saveAndFlush(servicoAtualizado);
+        return servicoRepository.saveAndFlush(servicoAtual);
 
     }
 
     public void apagarServico(Long id){
+        if (!servicoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Serviço não encontrado.");
+        }
         servicoRepository.deleteById(id);
     }
 }

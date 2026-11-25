@@ -1,4 +1,4 @@
-package com.org.agendamento.infrastructure;
+package com.org.agendamento.infrastructure.repository;
 
 import com.org.agendamento.infrastructure.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
