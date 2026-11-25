@@ -59,6 +59,7 @@ class AgendamentoServiceTest {
         cliente = clienteRepository.save(Cliente.builder()
                 .nome("Joao Silva")
                 .telefone("85999999999")
+                .senha("$2a$10$7EqJtq98hPqEX7fNZaFWoO2f8zM9O2Yq6w6KqX5u6w7V8x9y0z1a2")
                 .build());
 
         corte = servicoRepository.save(Servico.builder()

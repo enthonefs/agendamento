@@ -3,6 +3,7 @@ package com.org.agendamento.controller;
 import com.org.agendamento.business.ClienteService;
 import com.org.agendamento.business.dto.ClienteRequest;
 import com.org.agendamento.business.dto.ClienteResponse;
+import com.org.agendamento.business.dto.LoginRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,11 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ClienteResponse> criarCliente(@Valid @RequestBody ClienteRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponse.from(service.criarCliente(request)));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ClienteResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(ClienteResponse.from(service.autenticar(request)));
     }
 
     @PutMapping("/{id}")

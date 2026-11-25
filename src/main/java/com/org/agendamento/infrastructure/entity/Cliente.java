@@ -29,5 +29,8 @@ public class Cliente {
     @Column(name = "telefone", length = 11, unique = true, nullable = false)
     private String telefone;
 
+    @Column(name = "senha", nullable = false, length = 100)
+    private String senha;
+
 
 }

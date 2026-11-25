@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public record ClienteRequest(
         @NotBlank @Size(max = 100) String nome,
-        @NotBlank @Pattern(regexp = "\\d{10,11}") String telefone
+        @NotBlank @Pattern(regexp = "\\d{10,11}") String telefone,
+        @NotBlank @Size(min = 8, max = 72) String senha
 ) {
 }

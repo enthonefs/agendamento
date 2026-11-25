@@ -5,6 +5,7 @@ Backend REST para um site de agendamento de serviços. O fluxo principal é: o c
 ## Stack e camadas
 
 - Java 21, Spring Boot 4, Spring Web, Spring Data JPA e Bean Validation.
+- Spring Security com autenticação HTTP Basic e senhas armazenadas com BCrypt.
 - MySQL em produção/desenvolvimento e H2 nos testes.
 - `controller`: entrada HTTP e transformação para DTOs.
 - `business`: casos de uso e regras de agenda.
@@ -20,6 +21,8 @@ Backend REST para um site de agendamento de serviços. O fluxo principal é: o c
 - Apenas agendamentos `AGUARDANDO` podem ser reagendados ou cancelados pelo cliente.
 - Transições administrativas permitidas: `AGUARDANDO -> EM_ATENDIMENTO -> FINALIZADO` ou `AGUARDANDO -> CANCELADO`.
 - O horário precisa estar no futuro e o telefone do cliente é armazenado apenas com 10 ou 11 dígitos.
+- O cadastro público usa `POST /cliente` com `nome`, `telefone` e `senha`; o login usa `POST /cliente/login`.
+- Após o login, o frontend deve enviar `Authorization: Basic base64(telefone:senha)` nas demais requisições.
 
 ## Principais endpoints
 
@@ -33,6 +36,7 @@ Backend REST para um site de agendamento de serviços. O fluxo principal é: o c
 | Cancelar sem apagar histórico | DELETE | `/agendamento/{id}` |
 | Alterar status operacional | PATCH | `/agendamento/{id}/status?status=EM_ATENDIMENTO` |
 | Listar profissionais disponíveis para escolha | GET | `/barbeiro/ativos` |
+| Login do cliente | POST | `/cliente/login` |
 
 O cadastro e a manutenção de clientes, serviços e barbeiros continuam disponíveis nos recursos `/cliente`, `/servico` e `/barbeiro`.
 
@@ -57,6 +61,7 @@ Para executar apenas os testes:
 
 ## Próximas evoluções antes de produção
 
-- Adicionar autenticação/autorização e substituir o `clienteId` exposto na URL por uma identidade autenticada.
+- Substituir a autenticação Basic por sessão segura ou tokens em cookie HttpOnly.
+- Restringir o acesso aos agendamentos do cliente autenticado, substituindo o `clienteId` exposto na URL.
 - Configurar política de cancelamento, duração do serviço, expediente e intervalos de disponibilidade.
 - Adicionar notificações de confirmação/lembrete.
