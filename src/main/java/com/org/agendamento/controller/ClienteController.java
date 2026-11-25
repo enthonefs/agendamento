@@ -1,13 +1,15 @@
 package com.org.agendamento.controller;
 
-import com.org.agendamento.infrastructure.entity.Cliente;
-
 import com.org.agendamento.business.ClienteService;
+import com.org.agendamento.business.dto.ClienteRequest;
+import com.org.agendamento.business.dto.ClienteResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
@@ -18,24 +20,27 @@ public class ClienteController {
 
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> buscarTodos(){
-        return ResponseEntity.ok().body(service.buscarTodos());
+    public ResponseEntity<Page<ClienteResponse>> buscarTodos(Pageable pageable){
+        return ResponseEntity.ok().body(service.buscarTodos(pageable).map(ClienteResponse::from));
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente){
-        return ResponseEntity.ok(service.criarCliente(cliente));
+    public ResponseEntity<ClienteResponse> criarCliente(@Valid @RequestBody ClienteRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponse.from(service.criarCliente(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente){
-        return ResponseEntity.ok(service.atualizarCliente(id, cliente));
+    public ResponseEntity<ClienteResponse> atualizarCliente(
+            @PathVariable Long id,
+            @Valid @RequestBody ClienteRequest request
+    ){
+        return ResponseEntity.ok(ClienteResponse.from(service.atualizarCliente(id, request)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarCliente(@PathVariable Long id){
         service.deletarCliente(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

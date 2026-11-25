@@ -1,9 +1,10 @@
 spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
-spring.datasource.hikari.initialization-fail-timeout=
-spring.datasource.hikari.connection-timeout=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-spring.jpa.hibernate.ddl-auto=
-spring.jpa.show-sql=
-spring.jpa.database-platform=
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+
+# Exemplo: http://localhost:5173,http://localhost:3000
+app.cors.allowed-origins=${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173}
